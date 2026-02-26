@@ -1,73 +1,70 @@
-# React + TypeScript + Vite
+# Fleet Tracking
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A fleet tracking application built with React, TypeScript, and Vite. Track drivers and vehicles on a map with separate admin and driver dashboards.
 
-Currently, two official plugins are available:
+## Prerequisites
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Node.js** 18+ (recommend 20 LTS)
+- **npm** 9+ (or yarn/pnpm)
 
-## React Compiler
+## Setup
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 1. Clone and install
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+# From the project root
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Run the app
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Start the Vite dev server and the mock API (json-server) together:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+This runs:
+
+- **Vite** – frontend at [http://localhost:5173](http://localhost:5173)
+- **json-server** – mock API at [http://localhost:4000](http://localhost:4000)
+
+### 3. Optional: run services separately
+
+```bash
+# Terminal 1 – frontend only
+npm run dev
+# (Stop the dev script with Ctrl+C, then run Vite alone: npx vite)
+
+# Or use the dedicated mock server script:
+npm run mock:server   # API at http://localhost:4000
+```
+
+Then in another terminal:
+
+```bash
+npx vite   # Frontend at http://localhost:5173
+```
+
+## Scripts
+
+| Command | Description |
+|--------|-------------|
+| `npm run dev` | Start Vite + json-server (recommended for development) |
+| `npm run mock:server` | Start only json-server (port 4000) |
+| `npm run build` | TypeScript check + production build |
+| `npm run preview` | Serve the production build locally |
+| `npm run lint` | Run ESLint |
+
+## Project structure
+
+- `src/` – React app (pages, components, layouts, routes)
+- `mock/db.json` – Mock API data for json-server
+- `@/` – Path alias for `src/` (e.g. `@/components/...`)
+
+## Roles
+
+- **Admin** – Admin dashboard and fleet overview.
+- **Driver** – Driver dashboard and shift view.
+
+Use the header toggle to switch between Admin and Driver; the choice is stored in `localStorage`.
