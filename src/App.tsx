@@ -5,6 +5,7 @@ import DriverLayout from "./layouts/DriverLayout";
 import { driverRoutes } from "./routes/driverRoutes";
 import { adminRoutes } from "./routes/adminRoutes";
 import AdminLayout from "./layouts/AdminLayout";
+import { Toaster } from "./components/ui/toaster";
 
 function App() {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ function App() {
 
   return (
     <>
+      <Toaster />
       <div className="min-h-screen">
         <Header onToggleRole={toggleRole} isAdmin={isAdmin} />
         <main className="mx-auto mt-16">

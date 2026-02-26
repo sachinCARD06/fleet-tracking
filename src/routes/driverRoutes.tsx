@@ -1,5 +1,6 @@
-import DriverDashboard from "@/pages/driver/DriverDashboard";
+import DriverDashboard from "@/pages/DriverDashboard";
 import DriverShift from "@/pages/DriverShift";
+import VehicleLocationPage from "@/pages/VehicleLocationPage";
 
 export const driverRoutes = [
   {
@@ -8,8 +9,13 @@ export const driverRoutes = [
     name: "Dashboard",
   },
   {
-    path: "/driver",
+    path: "/shift-history",
     element: <DriverShift />,
-    name: "Shift",
+    name: "Shift History",
+  },
+  {
+    path: "/vehicle-location",
+    element: <VehicleLocationPage />,
+    name: "Vehicle Location",
   },
 ];

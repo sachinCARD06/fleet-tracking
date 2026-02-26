@@ -10,7 +10,7 @@
         "lng": -74.006
       },
       "inventory": {
-        "diesel": 15000,
+        "diesel": 14980,
         "petrol": 12000
       }
     },
@@ -109,7 +109,7 @@
       },
       "inventory": {
         "diesel": 100,
-        "petrol": 200
+        "petrol": 0
       }
     }
   ],
@@ -173,13 +173,24 @@
   ],
   "vehicles": [
     {
+      "id": "vehicle-1",
+      "registration": "TRK-103",
+      "capacity": 10000,
+      "type": "Tanker",
+      "currentLocation": {
+        "lat": 41.72248386215731,
+        "lng": -74.99892687899836
+      },
+      "status": "enroute"
+    },
+    {
       "id": "vehicle-3",
       "registration": "TRK-103",
       "capacity": 10000,
       "type": "Tanker",
       "currentLocation": {
-        "lat": 40.72,
-        "lng": -74.005
+        "lat": 40.725084680576785,
+        "lng": -73.98774299844536
       },
       "status": "enroute"
     },
@@ -189,8 +200,8 @@
       "capacity": 5000,
       "type": "Truck",
       "currentLocation": {
-        "lat": 40.725,
-        "lng": -73.995
+        "lat": 40.7248590889731,
+        "lng": -73.98667426719338
       },
       "status": "maintenance"
     },
@@ -213,31 +224,36 @@
       "status": "maintenance"
     },
     {
-      "status": "enroute",
-      "id": "vehicle-1772025539065"
+      "id": "vehicle-1772025539065",
+      "registration": "TRK-105",
+      "capacity": 7000,
+      "type": "Tanker",
+      "currentLocation": {
+        "lat": 12.9629,
+        "lng": 77.5775
+      },
+      "status": "enroute"
     },
     {
       "id": "vehicle-ce659a82-6875-4736-ad77-028bd7b87346",
       "registration": "TREF-987",
       "capacity": 2000,
-      "type": "Test"
+      "type": "Test",
+      "status": "enroute"
     },
     {
       "id": "vehicle-1433b95e-5c9a-471e-b2a3-8b4ad2dc2154",
       "registration": "TRH-uu88",
       "capacity": 889,
-      "type": "dskfjskfsfs"
+      "type": "dskfjskfsfs",
+      "currentLocation": {
+        "lat": 12.960061598359893,
+        "lng": 77.5789484951993
+      },
+      "status": "maintenance"
     }
   ],
   "orders": [
-    {
-      "status": "created",
-      "id": "order-1"
-    },
-    {
-      "status": "assigned",
-      "id": "order-2"
-    },
     {
       "id": "order-8da1104a-847a-4e80-9996-2c086b663a2c",
       "destinationId": "hub-1",
@@ -246,7 +262,7 @@
       "deliveryDate": "2026-03-06",
       "assignedDriverId": "driver-2",
       "assignedVehicleId": "vehicle-1772023056787",
-      "status": "assigned"
+      "status": "completed"
     },
     {
       "id": "order-7535b5f4-b6f1-4a4e-a6db-a65086d19db0",
@@ -256,7 +272,17 @@
       "deliveryDate": "2026-02-26",
       "assignedDriverId": "driver-2",
       "assignedVehicleId": "vehicle-5",
-      "status": "assigned"
+      "status": "completed"
+    },
+    {
+      "id": "order-1ab3ef13-3f7d-4a6f-988d-1af3feb04c7b",
+      "destinationId": "hub-1c463df0-f54b-4b4c-bf7c-db061d38ac4a",
+      "productId": "petrol",
+      "quantity": 1000,
+      "deliveryDate": "2026-02-27",
+      "assignedDriverId": "driver-7499b3d8-21db-4f27-8eb9-4be8d63e8464",
+      "assignedVehicleId": "vehicle-1772023056787",
+      "status": "completed"
     }
   ],
   "allocations": [
@@ -289,6 +315,12 @@
       "vehicleId": "vehicle-1772023056787",
       "driverId": "driver-4",
       "date": "2026-03-07"
+    },
+    {
+      "id": "alloc-6165a727-bd1e-4147-81b2-88c5e36d4403",
+      "vehicleId": "vehicle-1433b95e-5c9a-471e-b2a3-8b4ad2dc2154",
+      "driverId": "driver-7499b3d8-21db-4f27-8eb9-4be8d63e8464",
+      "date": "2026-02-28"
     }
   ]
 }

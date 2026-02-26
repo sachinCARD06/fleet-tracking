@@ -1,6 +1,7 @@
 import React from "react";
 import { useGetVehiclesQuery } from "../api/api";
 import FleetMap from "../components/FleetMap";
+import { Button } from "../components/ui/button";
 
 const AdminDashboard: React.FC = () => {
   const { data: vehicles, isLoading, isError, refetch } = useGetVehiclesQuery();
@@ -10,12 +11,7 @@ const AdminDashboard: React.FC = () => {
       <header className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Admin Dashboard</h1>
         <div>
-          <button
-            onClick={() => refetch()}
-            className="px-3 py-2 text-white rounded-md bg-sky-600"
-          >
-            Refresh
-          </button>
+          <Button onClick={() => refetch()}>Refresh</Button>
         </div>
       </header>
 

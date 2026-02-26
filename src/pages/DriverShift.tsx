@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from "react";
 import {
-  useGetDriversQuery,
   useGetAllocationsQuery,
   useGetOrdersQuery,
   useGetVehiclesQuery,
@@ -10,10 +9,15 @@ import {
   useUpdateHubMutation,
 } from "../api/api";
 
+import { useToast } from "@/hooks/use-toast";
+import SelectedDriver from "@/components/SelectedDriver";
+import { Button } from "@/components/ui/button";
+import { Navigation } from "lucide-react";
+
 const randomOffset = () => (Math.random() - 0.5) * 0.01;
 
 const DriverShift: React.FC = () => {
-  const { data: drivers } = useGetDriversQuery();
+  const { toast } = useToast();
   const { data: allocations } = useGetAllocationsQuery();
   const { data: orders } = useGetOrdersQuery();
   const { data: vehicles } = useGetVehiclesQuery();
@@ -23,18 +27,30 @@ const DriverShift: React.FC = () => {
   const [updateOrder] = useUpdateOrderMutation();
   const [updateHub] = useUpdateHubMutation();
 
-  const [selectedDriver, setSelectedDriver] = useState<string | "">("");
+  const [selectedDriverId, setSelectedDriverId] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("fleet-driver-id") || "";
+    }
+    return "";
+  });
+
+  const handleDriverChange = (driverId: string) => {
+    setSelectedDriverId(driverId);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("fleet-driver-id", driverId);
+    }
+  };
+
   const driverAllocations = useMemo(
-    () => allocations?.filter((a) => a.driverId === selectedDriver) || [],
-    [allocations, selectedDriver],
+    () => allocations?.filter((a) => a.driverId === selectedDriverId) || [],
+    [allocations, selectedDriverId],
   );
   const driverOrders = useMemo(
-    () => orders?.filter((o) => o.assignedDriverId === selectedDriver) || [],
-    [orders, selectedDriver],
+    () => orders?.filter((o) => o.assignedDriverId === selectedDriverId) || [],
+    [orders, selectedDriverId],
   );
 
   const handleGPS = async () => {
-    // update vehicle location for all allocated vehicles of this driver
     for (const a of driverAllocations) {
       const v = vehicles?.find((x) => x.id === a.vehicleId);
       if (!v || !v.currentLocation) continue;
@@ -60,31 +76,23 @@ const DriverShift: React.FC = () => {
         [ord.productId]: Math.max(0, current - ord.quantity),
       };
       await updateHub({ id: hub.id, inventory: updated }).unwrap();
+      toast({
+        title: "Delivery completed",
+        description: "Inventory updated.",
+      });
     }
-    alert("Delivery completed. Inventory updated.");
   };
 
   return (
     <div className="p-4 space-y-4">
-      <h2 className="text-xl font-semibold">Driver Interface - Shift</h2>
+      <h2 className="text-xl font-semibold">Shift History</h2>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div className="md:col-span-2">
           <div className="mb-4">
-            <label className="block mb-1 text-sm font-medium">
-              Select Driver
-            </label>
-            <select
-              className="w-full p-2 border rounded"
-              value={selectedDriver}
-              onChange={(e) => setSelectedDriver(e.target.value)}
-            >
-              <option value="">-- choose --</option>
-              {drivers?.map((d) => (
-                <option key={d.id} value={d.id}>
-                  {d.name}
-                </option>
-              ))}
-            </select>
+            <SelectedDriver
+              selectedDriverId={selectedDriverId}
+              handleDriverChange={handleDriverChange}
+            />
           </div>
 
           <div className="p-3 mb-4 border rounded bg-card border-var">
@@ -98,12 +106,10 @@ const DriverShift: React.FC = () => {
               ))}
             </ul>
             <div className="mt-3">
-              <button
-                onClick={handleGPS}
-                className="px-3 py-2 text-white rounded bg-sky-600"
-              >
+              <Button onClick={handleGPS}>
+                <Navigation className="w-4 h-4 mr-2" />
                 Send GPS Update
-              </button>
+              </Button>
             </div>
           </div>
           <div className="p-3 border rounded bg-card border-var">
@@ -123,33 +129,33 @@ const DriverShift: React.FC = () => {
                     </div>
                     <div className="text-sm">Status: {o.status}</div>
                   </div>
-                  <div className="space-y-2">
-                    <button
-                      onClick={() => handleComplete(o.id)}
-                      className="px-2 py-1 text-white bg-green-600 rounded"
-                    >
-                      Complete
-                    </button>
-                    <button
-                      onClick={() =>
-                        updateOrder({ id: o.id, status: "failed" }).unwrap()
-                      }
-                      className="px-2 py-1 text-white bg-red-600 rounded"
-                    >
-                      Fail
-                    </button>
+                  <div className="space-x-2">
+                    {o.status !== "completed" && o.status !== "failed" && (
+                      <>
+                        <Button
+                          size="sm"
+                          onClick={() => handleComplete(o.id)}
+                          className="px-2 py-1 text-white bg-green-600 rounded"
+                        >
+                          Complete
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() =>
+                            updateOrder({ id: o.id, status: "failed" }).unwrap()
+                          }
+                          className="px-2 py-1 text-white bg-red-600 rounded"
+                        >
+                          Fail
+                        </Button>
+                      </>
+                    )}
                   </div>
                 </li>
               ))}
             </ul>
           </div>
-        </div>
-
-        <div className="p-4 border rounded bg-card border-var">
-          <h3 className="font-semibold">Quick Actions</h3>
-          <p className="mt-2 text-sm">
-            Start shift / End shift actions can be simulated here.
-          </p>
         </div>
       </div>
     </div>

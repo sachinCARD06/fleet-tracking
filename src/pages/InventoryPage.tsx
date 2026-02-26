@@ -12,21 +12,31 @@ const InventoryPage: React.FC = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-semibold mb-4">Inventory Dashboard</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <h2 className="mb-4 text-xl font-semibold">Inventory Dashboard</h2>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {hubs?.map((h) => (
           <div key={h.id} className="p-4 border rounded bg-card border-var">
             <div className="flex items-center justify-between">
               <div>
-                <div className="font-medium">{h.name} <span className="text-sm text-gray-500">({h.type})</span></div>
+                <div className="font-medium">
+                  {h.name}{" "}
+                  <span className="text-sm text-gray-500">({h.type})</span>
+                </div>
                 <div className="text-sm">{h.address}</div>
               </div>
             </div>
             <div className="mt-3 space-y-2">
               {Object.entries(h.inventory).map(([product, qty]) => (
-                <div key={product} className="flex items-center justify-between">
+                <div
+                  key={product}
+                  className="flex items-center justify-between"
+                >
                   <div className="text-sm capitalize">{product}</div>
-                  <div className={`px-2 py-1 rounded ${colorFor(qty as number)}`}>{qty}</div>
+                  <div
+                    className={`px-2 py-1 rounded ${colorFor(qty as number)}`}
+                  >
+                    {qty}
+                  </div>
                 </div>
               ))}
             </div>
@@ -38,4 +48,3 @@ const InventoryPage: React.FC = () => {
 };
 
 export default InventoryPage;
-
