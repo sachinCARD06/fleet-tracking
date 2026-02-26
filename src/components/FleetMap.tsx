@@ -12,7 +12,7 @@ export const FleetMap: React.FC<{ vehicles: Vehicle[] }> = ({ vehicles }) => {
     : [40.7128, -74.006];
 
   return (
-    <div className="h-[60vh] w-full rounded-md overflow-hidden border">
+    <div className="w-full overflow-hidden border h-[60vh] rounded-md">
       <MapContainer
         center={center as [number, number]}
         zoom={13}

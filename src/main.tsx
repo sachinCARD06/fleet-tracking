@@ -1,6 +1,7 @@
 import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
+import "leaflet/dist/leaflet.css";
 import "./index.css";
 import App from "./App.tsx";
 import { store } from "./app/store";
